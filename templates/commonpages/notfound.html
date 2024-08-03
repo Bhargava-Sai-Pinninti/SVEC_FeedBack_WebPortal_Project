@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sri Vasavi Engineering College</title>
+    <style>
+      /* Reset some default styles to ensure consistency */
+      body,
+      h1,
+      h2,
+      p {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Set a background image for the body */
+      body {
+        background-color: #f0f0f0;
+        font-family: 'Lato', sans-serif;
+        font-weight: 400;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        background-image: url('{{ url_for('static', filename='images/bg.jpg') }}');
+      }
+
+      /* Style the header */
+      header {
+        background-color: rgba(1, 1, 1, 0.28);
+        backdrop-filter: blur(10px);
+        color: white;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 20px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999; /* Ensure the navbar is above other content */
+      }
+
+      /* Style the navigation menu */
+      nav {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 80px;
+      }
+
+      .nav__logo {
+        display: flex;
+        align-items: center;
+      }
+
+      .nav__logo img {
+        height: 60px;
+        width: 60px;/* Adjust as needed */
+        margin-right: 10px;
+      }
+
+      .logo-label {
+        font-size: 25px; /* Adjust as needed */
+        font-weight: bold;
+      }
+
+      /* Style the main content container */
+      .container {
+        max-width: 800px; /* Adjust as needed */
+        width: 100%;
+        margin-top: 50px; /* Adjust to accommodate the fixed navbar */
+        padding: 20px;
+        background-color: rgba(1, 1, 1, 0.28);
+        border-radius: 10px;
+        box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        color: white;
+      }
+
+      /* Style the header text */
+      .header {
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+        color: #333;
+      }
+
+      /* Style the error message */
+      .error-section {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .error-section h2 {
+        font-size: 24px;
+        color: #d80e0e;
+      }
+
+      /* Style the contact section */
+      .contact-section {
+        margin-top: 30px;
+      }
+
+      .contact-section h2 {
+        font-size: 24px;
+        color: #007bff;
+        margin-bottom: 10px;
+      }
+
+      .contact-info {
+        line-height: 1.6;
+      }
+
+      .contact-info u {
+        font-weight: bold;
+      }
+
+      .contact-info a {
+        color: #007bff;
+        text-decoration: none;
+      }
+
+      .contact-info a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav__logo">
+          <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="logo"
+          />
+          <span class="logo-label"
+            >Sri Vasavi Engineering College (AUTONOMOUS)</span
+          >
+        </div>
+      </nav>
+    </header>
+    <div class="container">
+      <div class="header">
+        <h1 style="color: white">Sri Vasavi Engineering College</h1>
+      </div>
+      <div class="error-section">
+        <h2>404 ERROR</h2>
+        <p>Please contact the admins to resolve the error you are facing.</p>
+      </div>
+      <div class="contact-section">
+        <h2>Contact Us</h2>
+        <div class="contact-info">
+          <p>
+            <u>Contact Details</u><br /><br />
+            Sri Vasavi Engineering College<br />
+            Pedatadepalli, Tadepalligudem - 534 101,<br />
+            West Godavari Dist., Andhra Pradesh.<br />
+            Phone No's.: +91-8818-284355, 284344, 284544<br />
+            Fax No.: +91-8818-284322<br />
+            Email:
+            <a href="mailto:principal@srivasaviengg.ac.in"
+              >principal@srivasaviengg.ac.in</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

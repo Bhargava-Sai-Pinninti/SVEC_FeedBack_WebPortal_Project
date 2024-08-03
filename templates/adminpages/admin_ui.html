@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin_Features</title>
+
+    <style>
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&display=swap');
+
+*{
+    font-family: 'Poppins', sans-serif;
+    margin:0; padding:0;
+    box-sizing: border-box;
+    outline: none; border:none;
+    text-decoration: none;
+    text-transform: capitalize;
+    transition: .2s linear;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Arial', sans-serif;
+
+     background-image: url('{{ url_for('static', filename='images/adminfeaturesbg.jpg') }}');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+}
+select {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            margin : 4px;
+            background-color: #fff; /* Added background color */
+            color: #333; /* Added text color */
+            font-size: 13px; /* Adjusted font size */
+        }
+
+
+.container{
+    padding:20px 9%;
+    padding-bottom: 100px;
+    margin-top:80px;
+}
+
+.container .heading{
+    text-align: center;
+    padding: 20px 10px;
+    color: #ffffff;
+    text-shadow: 0 5px 10px rgba(0, 0, 0, 0.491);
+    font-size: 45px;
+}
+
+.container .box-container{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+    gap:15px;
+
+
+}
+
+.box-container{
+    backdrop-filter: blur(25px);
+    background: rgba(0, 0, 0, 0.2);
+    margin: 15px;
+    padding: 10px;
+    border-radius: auto;
+}
+
+
+.container .box-container .box
+{
+  background-color: #000000a4;
+  backdrop-filter: blur(5px); /* Apply a blur effect to the background */
+  border-radius: 15px; /* Add rounded corners to the card */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.1); /* Add a subtle box shadow */
+  margin: 1rem; /* Original margin */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
+  justify-content: center; /* Center content vertically */
+}
+
+.container .box-container .box img{
+    height: 60px;
+}
+
+
+.container .box-container h3{
+    color:#ffffff;
+    width:auto;
+    font-size: 18px;
+    padding:5px 0;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+
+
+
+.container .box-container p{
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color:#ffffff;
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+
+
+
+.container .box-container .btn{
+    margin: 8px;
+    display: inline-block;
+    background:#0F0F0F;
+    color:#fff;
+    font-size: 14px;
+    border-radius: 22px;
+    padding: 12px 20px;
+}
+
+
+
+
+
+.container .box-container .box .btn:hover{
+    letter-spacing: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+
+header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Updated style */
+    font-size: 1rem;
+    z-index: 1;
+    background-image: linear-gradient(180deg, #1d1e22e1, rgba(52, 53, 56, 0.267), transparent);
+    padding: 20px;
+}
+
+header ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Updated style */
+}
+
+header ul li {
+    margin: 0 15px;
+}
+
+header ul li a {
+    position: relative;
+    color: #f4f4f4;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+}
+
+header ul li a::after {
+    position: absolute;
+    content: "";
+    left: 0;
+    bottom: -3px;
+    width: 0;
+    height: 3px;
+    transition: all 0.2s linear;
+}
+
+header ul li a:hover::after {
+    width: 100%;
+    background-color: #ff0000;
+}
+
+header h2 {
+    color: #ffffff; /* Add this line to set the color to white */
+}
+
+
+.logo {
+  width: 50px;
+  cursor: pointer;
+  transition: 3.5s;
+  margin: 1px;
+}
+
+
+
+
+
+
+
+
+
+
+#preloader {
+    /* Center the preloader on the page */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Set the initial visibility to visible */
+    visibility: visible;
+    /* Adjust the z-index to control stacking order */
+    z-index: 100;
+    /* Set the width and height for the preloader circle */
+    width: 100%;
+    height: 100%;
+    /* Optionally, you can style the preloader further */
+    /* For example, adjust the background color, border-radius, etc. */
+    background-color: rgb(255, 255, 255);
+    /* Center the preloader image within the circle */
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 30%; /* Adjust the size of the preloader image */
+  }
+
+@media (max-width:768px){
+    .container{
+        padding:20px;
+    }
+}
+
+    </style>
+
+</head>
+<body>
+     <header>
+        <a class ="logo" href="/home"><img class="logo" src="{{ url_for('static', filename='images/logo.png') }}"></a>
+
+       <u><h2>
+            Admin Features
+        </h2></u>
+
+        <ul>
+          <li> <a href="home">Logout</a> </li>
+        </ul>
+      </header>
+    <div id="preloader" style="background-image: url('images/preloader.gif');"></div>
+<div class="container">
+
+    <div class="box-container">
+
+        <div class="box">
+            <img src="{{ url_for('static', filename='images/dashboard.png') }}">
+            <h3>Analysis Dashboard</h3>
+            <p>Click The Below Button</p>
+            <form action="{{ url_for('admin_dashboard') }}" method="POST">
+                <button type="submit" class="btn">Click here</button>
+            </form>
+
+        </div>
+
+        <div class="box">
+            <img src="{{ url_for('static', filename='images/document_generator.png') }}">
+            <h3>Document Generator</h3>
+            <form action="{{ url_for('document_generator') }}" method="POST">
+                <select name="selected_folder" id="selected_folder" required>
+                    <option value="" disabled selected hidden>Select Academic Year</option>
+                    {% for folder_name in folders %}
+                        <option value="{{ folder_name }}">{{ folder_name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn" style="align-self:center">Click Here</button>
+            </form>
+        </div>
+
+        <div class="box">
+            <img src="{{ url_for('static', filename='images/admin.png') }}">
+            <h3>Manage Admins</h3>
+            <p>Click The Below Button</p>
+            <form action="{{ url_for('admin_management') }}" method="POST">
+                <button type="submit" class="btn">Click here</button>
+            </form>
+        </div>
+
+
+
+</div>
+  <div class="box-container">
+
+       <div class="box">
+            <img src="{{ url_for('static', filename='images/newyear.png') }}">
+            <h3>Manage Academic Years</h3>
+            <p>Click The Below Button</p>
+            <form action="{{ url_for('admin_new_academic_year') }}" method="POST">
+                <button type="submit" class="btn">Click here</button>
+            </form>
+
+        </div>
+
+        <div class="box">
+            <img src="{{ url_for('static', filename='images/selectyear.png') }}">
+            <h3>Set Default Year</h3>
+
+            {% if message %}
+                <p>{{ message }}</p>
+            {% endif %}
+
+            <form action="/admin_ui" method="post">
+                <select name="selected_folder" id="selected_folder" required>
+                    <option value="" disabled selected hidden>Choose Academic Year</option>
+                    {% for folder_name in folders %}
+                        <option value="{{ folder_name }}">{{ folder_name }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn">Set Default Value</button>
+            </form>
+        </div>
+
+
+
+
+
+        <div class="box">
+            <img src="{{ url_for('static', filename='images/stakeholders.png') }}">
+            <h3>Add Stakeholders</h3>
+            <p>Click The Below Button</p>
+            <a href="/admin_new_stakeholder">
+                <button class="btn">Click here</button>
+            </a>
+        </div>
+</div>
+
+</div>
+<script>
+    var loader = document.getElementById("preloader");
+    var startTime = new Date().getTime();
+    var pageLoaded = false;
+
+    // Function to hide the preloader
+    function hidePreloader() {
+        loader.style.visibility = "hidden";
+    }
+
+    // Function to handle when the page is fully loaded
+    function onPageLoaded() {
+        pageLoaded = true;
+        var currentTime = new Date().getTime();
+        var timeDiff = currentTime - startTime;
+        var minDisplayTime = 800; // 1 seconds
+        var remainingTime = minDisplayTime - timeDiff;
+
+        if (remainingTime <= 0) {
+            hidePreloader();
+        } else {
+            setTimeout(hidePreloader, remainingTime);
+        }
+    }
+
+    // Hide the preloader after 1 seconds (minimum display time)
+    setTimeout(hidePreloader, 500);
+
+    // Check if the page is fully loaded, and if so, hide the preloader
+    window.addEventListener("load", onPageLoaded);
+</script>
+</body>
+</html>

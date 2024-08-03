@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <style>
+      /* Reset some default styles to ensure consistency */
+      body,
+      h1,
+      h2,
+      p,
+      ul,
+      li {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Glass Morphism Effect */
+      body {
+        background: linear-gradient(
+          rgba(255, 255, 255, 0.5),
+          rgba(255, 255, 255, 0.5)
+        );
+        background-image: url('{{ url_for('static', filename='images/bg.jpg') }}');
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-attachment: fixed;
+        font-family: 'Lato', sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        overflow: hidden;
+      }
+
+      .glass-container {
+        background: rgba(58, 57, 57, 0.3);
+        backdrop-filter: blur(10px);
+        border-radius: 10px;
+        padding: 20px;
+        margin: 20px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        width: 100%;
+      }
+
+      /* Style the header */
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: rgba(60, 58, 58, 0.402);
+        backdrop-filter: blur(10px);
+        padding: 10px 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 999;
+        color: white;
+        height: 50px;
+      }
+      header logo
+      {
+          height: 40px;
+          width: 40px;
+      }
+
+      header ul {
+        display: flex;
+        list-style: none;
+      }
+
+      header ul li {
+        margin-right: 20px;
+        color: white;
+      }
+
+      header ul li:last-child {
+        margin-right: 0;
+      }
+
+      header ul li a {
+        text-decoration: none;
+        color: #333;
+        font-weight: bold;
+      }
+
+      /* Style the header text */
+      .header {
+        text-align: center;
+        padding: 20px;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 5px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 36px;
+        color: #333;
+      }
+
+      /* Style the about section */
+      .about-section,
+      .contact-section {
+        margin-bottom: 20px;
+        color: white;
+      }
+
+      /* Style the header and paragraph in the about and contact sections */
+      .about-section h2,
+      .contact-section h2 {
+        color: #007bff;
+      }
+
+      .about-section p,
+      .contact-section p {
+        line-height: 1.6;
+      }
+
+      /* Style the contact details in the contact section */
+      .contact-section u {
+        font-weight: bold;
+      }
+    </style>
+    <title>Sri Vasavi Engineering College</title>
+  </head>
+  <body>
+    <header>
+
+      <h2>Sri Vasavi Engineering College</h2>
+      <ul>
+        <li><a href="home" style="color: white">Home</a></li>
+      </ul>
+    </header>
+
+    <div class="glass-container">
+      <div class="about-section">
+        <h2>About Us</h2>
+        <p> </p>
+      </div>
+
+      <div class="contact-section">
+        <h2>Contact Us</h2>
+        <p>
+          <u>Contact Details</u><br /><br />
+          Sri Vasavi Engineering College<br />
+          Pedatadepalli, Tadepalligudem - 534 101,<br />
+          West Godavari Dist., Andhra Pradesh.<br />
+          Phone No's.: +91-8818-284355, 284344, 284544,<br />
+          Fax No.: +91-8818-284322<br />
+          Email:
+          <a href="mailto:principal@srivasaviengg.ac.in"
+            >principal@srivasaviengg.ac.in</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

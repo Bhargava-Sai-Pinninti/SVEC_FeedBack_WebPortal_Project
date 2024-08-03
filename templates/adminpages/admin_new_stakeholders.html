@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin New Stakeholder</title>
+
+    <style>
+        /* Reset CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Base styles for responsive layout */
+        body {
+            font-family: "Montserrat", sans-serif;
+            background-position: fixed ;
+            background-size: cover; /* or background-size: 100% auto; */
+            background-repeat: no-repeat;
+            background-image: url('{{ url_for('static', filename='images/adminfeaturesbg.jpg') }}');
+            margin: 15px;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            color: white;
+            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: Arial, Helvetica, sans-serif;
+            backdrop-filter: blur(10px);
+            margin-bottom: 40px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar img {
+            height: 50px;
+            width: 50px;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .navbar-buttons {
+            display: flex;
+        }
+
+        .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        margin:10px;
+        border: 1px solid #fff;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+        .navbar a:hover {
+            background-color: #fff;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px); /* Glass morphism effect */
+        }
+
+        hr {
+            margin:10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        label {
+            font-weight: bold;
+            margin: 5px;
+            padding:5px;
+            color: #555;
+        }
+
+        input,
+        select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin: 5px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent background for input/select */
+            width: 100%;
+            transition: border-color 0.3s, background-color 0.3s;
+        }
+
+        select {
+            height: 40px; /* Increased height for the select field */
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #4caf50; /* Highlight border color on focus */
+            background-color: rgba(255, 255, 255, 1); /* Highlight background color on focus */
+        }
+
+        button {
+            padding: 15px;
+            margin:10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Additional styling for file input */
+        input[type="file"] {
+            padding: 9px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin : 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+
+        .message {
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            text-align: center;
+            background-color: #283ba7;
+            color: #fff;
+        }
+
+        .success {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        .error {
+            background-color: #dc3545;
+            color: #fff;
+        }
+
+        .warning {
+            background-color: #ffc107;
+            color: #fff;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            padding: 40px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            padding:5px;
+        }
+
+        thead th {
+            position: sticky;
+            top: 0;
+            background-color: #283ba7;
+            color: #fff;
+            padding: 10px;
+            text-align: left;
+        }
+
+        tbody tr {
+            background-color: #fff;
+        }
+
+        tbody td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .footers {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: rgba(14, 12, 12, 0.8);
+            color: white;
+            border-radius: 0.5px;
+        }
+
+        .footers a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        /* Media queries for adjusting layout at different breakpoints */
+        @media (max-width: 600px) {
+            h2 {
+                font-size: 1.8rem;
+            }
+
+            .container {
+                padding: 15px;
+            }
+
+            table {
+                font-size: 14px;
+            }
+            th{
+                margin: 10px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            label {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="navbar">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Svec Logo" />
+        <h1 style="color: white; text-align: center">Add Stakeholders</h1>
+        <div class="navbar-buttons">
+            <a href="/admin_ui" class="logout-btn">Admin Features</a>
+            <a href="/home" class="logout-btn">Log Out</a>
+        </div>
+    </div>
+    <div class="container">
+        {% if message %}
+        <!-- Display Messages -->
+        <div class="message">{{ message }}</div>
+        {% endif %}
+        <!-- Manual Submission Form -->
+        <hr>
+
+        <form action="/admin_new_stakeholder" method="post" class="glass-morphism">
+
+            <div class="form-group">
+                <br><h3 align="center"><label ><u>Insert Stakeholders</u></label></h3><br>
+            <hr>
+                <label for="RollNumber">Enter RollNumber:</label>
+                <input type="text" id="RollNumber" name="RollNumber" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="Password">Enter Password:</label>
+                <input type="password" id="Password" name="Password" required autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label for="userType">Select User Type:</label>
+                <select id="userType" name="userType" required>
+                    <option disabled selected value="">Select User Type</option>
+                    <option value="Faculty">Faculty</option>
+                    <option value="Student">Student</option>
+                    <option value="Alumni">Alumni</option>
+                    <option value="Employer">Employer</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="Department">Select Department:</label>
+                <select id="Department" name="Department" required>
+                    <option disabled selected value="">Select Department</option>
+                    {% for department in departments %}
+                    <option value="{{ department }}">{{ department }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" style="font-size: 15px"> Insert </button>
+        </form>
+
+        <hr><hr>
+        <center><h1><label>Or</label></h1></center>
+        <hr><hr>
+
+
+        <!-- Drag-and-Drop Submission Form -->
+        <form action="/admin_new_stakeholder_drag" method="post" enctype="multipart/form-data" class="glass-morphism">
+
+            <div class="form-group">
+                <br><h3 align="center"><label><u>Insert Stakeholders Via Excel File.</u></label></h3><br>
+                 <hr>
+                <label for="excelFile">Upload Excel File:</label>
+                <input type="file" id="excelFile" name="excelFile"
+                    accept=".xlsx, .xls, .xlsm, .xlsb, .csv, .xltx, .xltm, .xls, .xlt, .xml, .xlw, .xlam, .xla" required>
+            </div>
+
+            <button type="submit" style="font-size:15px">Submit Excel File</button>
+        </form>
+
+        <hr>
+        <hr>
+
+        {% if entries %}<!-- Display Table -->
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>RollNumber</th>
+                        <th>Status</th>
+                        <th>UserType</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in entries %}
+                    <tr
+                        class="{% if 'Data added successfully' in entry.status %}success{% elif 'already exists' in entry.status %}warning{% else %}error{% endif %}">
+                        <td>{{ entry.RollNumber }}</td>
+                        <td>{{ entry.status }}</td>
+                        <td>{{ entry.UserType }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+        {% endif%}
+  <hr>
+    </div>
+    <br>
+    <div class="container" style="margin-top: 20px">
+          <div>
+              <table>
+
+            <!-- Table Header -->
+                    <thead>
+                        <th colspan=3  style="text-align: center";>List of Students</th>
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Password</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+            <!-- Table Body -->
+
+                    <tbody>
+                        {% if not student.empty %}
+                        {% for index, row in student.iterrows() %}
+                            <tr>
+                                <td>{{ row['RollNumber'] }}</td>
+                                <td>{{ row['Password'] }}</td>
+                                <td>{{ row['Department'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+               </table>
+               <br>
+               <br>
+                <table>
+            <!-- Table Header -->
+                    <thead>
+                        <th colspan=3 style="text-align: center">List of Alumni</th>
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Password</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+            <!-- Table Body -->
+                    <tbody>
+                        {% if not alumni.empty %}
+                        {% for index, row in alumni.iterrows() %}
+                            <tr>
+                                <td>{{ row['RollNumber'] }}</td>
+                                <td>{{ row['Password'] }}</td>
+                                <td>{{ row['Department'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+               </table>
+               <br>
+               <br>
+                <table>
+            <!-- Table Header -->
+                    <thead>
+                        <th colspan=3 style="text-align: center">List of Employers</th>
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Password</th>
+                            <th>Department</th>
+                        </tr>
+                    </thead>
+            <!-- Table Body -->
+                    <tbody>
+                        {% if not employer.empty %}
+                        {% for index, row in employer.iterrows() %}
+                            <tr>
+                                <td>{{ row['RollNumber'] }}</td>
+                                <td>{{ row['Password'] }}</td>
+                                <td>{{ row['Department'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+               </table>
+               <br>
+               <br>
+                <table>
+            <!-- Table Header -->
+                    <thead>
+                        <th colspan=3 style="text-align: center">List of Faculty</th>
+                        <tr>
+                            <th>Roll Number</th>
+                            <th>Password</th>
+                            <th>Department</th>
+
+                        </tr>
+                    </thead>
+            <!-- Table Body -->
+                    <tbody>
+                        {% if not faculty.empty %}
+                        {% for index, row in faculty.iterrows() %}
+                            <tr>
+                                <td>{{ row['RollNumber'] }}</td>
+                                <td>{{ row['Password'] }}</td>
+                                <td>{{ row['Department'] }}</td>
+                            </tr>
+                        {% endfor %}
+                        {% endif %}
+                    </tbody>
+               </table>
+        </div>
+    </div>
+
+    <div class="footers">
+        <marquee behavior="scroll" direction="left">
+            <a href="#" class="contact-link">Any enquiry? Contact us:- Email:principal@srivasaviengg.ac.in | Phone
+                Nos.:+91-8818-284355 ,284344,284544</a>
+        </marquee>
+    </div>
+</body>
+
+</html>

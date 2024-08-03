@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Generator</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: auto;
+        margin: 0;
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+    }
+
+    .navbar {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        color: white;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+        backdrop-filter: blur(10px);
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        position: fixed;
+        width: 95%;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+
+    .navbar img {
+        height: 50px;
+        width: 50px;
+    }
+
+    .navbar h1 {
+        margin: 0;
+        font-size: 18px;
+    }
+
+    .navbar-buttons {
+        display: flex;
+    }
+
+    .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px;
+        border: 1px solid #fff;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .navbar a:hover {
+        background-color: #fff;
+        color: #333;
+    }
+
+    .container {
+        margin-top: 70px; /* Adjust according to navbar height */
+        background: rgba(255, 255, 255, 0.5);
+        border-radius: 20px;
+        padding: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    form,
+    table {
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        margin-bottom: 20px;
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        padding: 10px;
+        text-align: left;
+        border: 1px solid black; /* Set border to black */
+    }
+
+    select,
+    button {
+        padding: 10px;
+        border-radius: 5px;
+        border: none;
+        outline: none;
+        margin-bottom: 10px;
+    }
+
+    select {
+        width: 100%;
+    }
+
+    button {
+        color: black;
+        text-decoration: none;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px;
+        border: 1px solid #fff;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+
+    /* Styling the checkboxes */
+    input[type="checkbox"] {
+        appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        width: 30px;
+        height: 30px;
+        border: 2px solid black; /* Set border to black */
+        border-radius: 5px;
+        outline: none;
+        cursor: pointer;
+        vertical-align: middle;
+        position: relative;
+        transition: background-color 0.3s ease;
+    }
+
+    input[type="checkbox"]:checked {
+        background-color: #3ce041;
+        border-color: #3ce041;
+    }
+
+    input[type="checkbox"]:checked::after {
+        content: '\2714';
+        font-size: 14px;
+        color: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+</style>
+
+</head>
+<body style="background-image: url('{{ url_for('static', filename='images/adminfeaturesbg.jpg') }}');">
+    <div class="navbar">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Svec Logo">
+        <h1>Document Generator</h1>
+        <button type="button"  id="generate_button">Generate Document</button>
+        <div class="navbar-buttons">
+
+            <a href="/admin_ui" class="logout-btn">Admin Features</a>
+            <a href="/home" class="logout-btn">Log Out</a>
+        </div>
+    </div>
+    <div class="container">
+        <form id="document_generator_form" method="POST" action="/pdf_download">
+            <label for="department">Select One Department From Academic Year: {{ current_value }}</label>
+            <select id="department" name="department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value="" selected>College Wide</option>
+                {% for department in department_names %}
+                    <option value="{{ department }}">{{ department }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="current_value" value="{{ current_value }}">
+            <input type="hidden" name="student_selected_rows" id="student_selected_rows">
+            <input type="hidden" name="alumni_selected_rows" id="alumni_selected_rows">
+            <input type="hidden" name="employer_selected_rows" id="employer_selected_rows">
+            <input type="hidden" name="faculty_selected_rows" id="faculty_selected_rows">
+        </form>
+
+        <h2><u>Select The Sugestions</u></h2>
+        <h4>selected suggestions are include in document</h4>
+
+        <!-- Table for Student Suggestions -->
+        <h2>Student Suggestions</h2>
+        <table id="student_table">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>Suggestion</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody>
+                {% for index, row in Student_department_Suggestions.iterrows() %}
+                    <tr class="student_row" data-department="{{ row['Department'] }}">
+                        <td>{{ row['RollNumber'] }}</td>
+                        <td>{{ row['Department'] }}</td>
+                        <td>{{ row['Suggestion'] }}</td>
+                        <td><input type="checkbox" class="selected_student_row" value="{{ index }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Table for Alumni Suggestions -->
+        <h2>Alumni Suggestions</h2>
+        <table id="alumni_table">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>Suggestion</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody>
+                {% for index, row in Alumni_department_Suggestions.iterrows() %}
+                    <tr class="alumni_row" data-department="{{ row['Department'] }}">
+                        <td>{{ row['RollNumber'] }}</td>
+                        <td>{{ row['Department'] }}</td>
+                        <td>{{ row['Suggestion'] }}</td>
+                        <td><input type="checkbox" class="selected_alumni_row" value="{{ index }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Table for Employer Suggestions -->
+        <h2>Employer Suggestions</h2>
+        <table id="employer_table">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>Suggestion</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody>
+                {% for index, row in Employer_department_Suggestions.iterrows() %}
+                    <tr class="employer_row" data-department="{{ row['Department'] }}">
+                        <td>{{ row['RollNumber'] }}</td>
+                        <td>{{ row['Department'] }}</td>
+                        <td>{{ row['Suggestion'] }}</td>
+                        <td><input type="checkbox" class="selected_employer_row" value="{{ index }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <!-- Table for Faculty Suggestions -->
+        <h2>Faculty Suggestions</h2>
+        <table id="faculty_table">
+            <!-- Table Header -->
+            <thead>
+                <tr>
+                    <th>Roll Number</th>
+                    <th>Department</th>
+                    <th>Suggestion</th>
+                    <th>Select</th>
+                </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody>
+                {% for index, row in Faculty_department_Suggestions.iterrows() %}
+                    <tr class="faculty_row" data-department="{{ row['Department'] }}">
+                        <td>{{ row['RollNumber'] }}</td>
+                        <td>{{ row['Department'] }}</td>
+                        <td>{{ row['Suggestion'] }}</td>
+                        <td><input type="checkbox" class="selected_faculty_row" value="{{ index }}"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div>
+    <!-- JavaScript code -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var departmentSelect = document.getElementById('department');
+            var studentTable = document.getElementById('student_table');
+            var alumniTable = document.getElementById('alumni_table');
+            var employerTable = document.getElementById('employer_table');
+            var facultyTable = document.getElementById('faculty_table');
+            var generateButton = document.getElementById('generate_button');
+            var studentSelectedRowsInput = document.getElementById('student_selected_rows');
+            var alumniSelectedRowsInput = document.getElementById('alumni_selected_rows');
+            var employerSelectedRowsInput = document.getElementById('employer_selected_rows');
+            var facultySelectedRowsInput = document.getElementById('faculty_selected_rows');
+
+            generateButton.addEventListener('click', function() {
+                var selectedStudentRows = [];
+                var selectedAlumniRows = [];
+                var selectedEmployerRows = [];
+                var selectedFacultyRows = [];
+
+                var studentCheckboxes = document.getElementsByClassName('selected_student_row');
+                for (var i = 0; i < studentCheckboxes.length; i++) {
+                    if (studentCheckboxes[i].checked) {
+                        var row = studentCheckboxes[i].parentNode.parentNode;
+                        var rowData = {
+                            "RollNumber": row.cells[0].innerText,
+                            "Department": row.cells[1].innerText,
+                            "Suggestion": row.cells[2].innerText
+                        };
+                        selectedStudentRows.push(rowData);
+                    }
+                }
+
+                var alumniCheckboxes = document.getElementsByClassName('selected_alumni_row');
+                for (var i = 0; i < alumniCheckboxes.length; i++) {
+                    if (alumniCheckboxes[i].checked) {
+                        var row = alumniCheckboxes[i].parentNode.parentNode;
+                        var rowData = {
+                            "RollNumber": row.cells[0].innerText,
+                            "Department": row.cells[1].innerText,
+                            "Suggestion": row.cells[2].innerText
+                        };
+                        selectedAlumniRows.push(rowData);
+                    }
+                }
+
+                var employerCheckboxes = document.getElementsByClassName('selected_employer_row');
+                for (var i = 0; i < employerCheckboxes.length; i++) {
+                    if (employerCheckboxes[i].checked) {
+                        var row = employerCheckboxes[i].parentNode.parentNode;
+                        var rowData = {
+                            "RollNumber": row.cells[0].innerText,
+                            "Department": row.cells[1].innerText,
+                            "Suggestion": row.cells[2].innerText
+                        };
+                        selectedEmployerRows.push(rowData);
+                    }
+                }
+
+                var facultyCheckboxes = document.getElementsByClassName('selected_faculty_row');
+                for (var i = 0; i < facultyCheckboxes.length; i++) {
+                    if (facultyCheckboxes[i].checked) {
+                        var row = facultyCheckboxes[i].parentNode.parentNode;
+                        var rowData = {
+                            "RollNumber": row.cells[0].innerText,
+                            "Department": row.cells[1].innerText,
+                            "Suggestion": row.cells[2].innerText
+                        };
+                        selectedFacultyRows.push(rowData);
+                    }
+                }
+
+                studentSelectedRowsInput.value = JSON.stringify(selectedStudentRows);
+                alumniSelectedRowsInput.value = JSON.stringify(selectedAlumniRows);
+                employerSelectedRowsInput.value = JSON.stringify(selectedEmployerRows);
+                facultySelectedRowsInput.value = JSON.stringify(selectedFacultyRows);
+
+                document.getElementById('document_generator_form').submit();
+            });
+
+            departmentSelect.addEventListener('change', function() {
+                var selectedDepartment = departmentSelect.value;
+
+                var studentRows = studentTable.getElementsByClassName('student_row');
+                for (var i = 0; i < studentRows.length; i++) {
+                    var row = studentRows[i];
+                    var department = row.getAttribute('data-department');
+                    if (selectedDepartment === "" || department === selectedDepartment) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+
+                var alumniRows = alumniTable.getElementsByClassName('alumni_row');
+                for (var i = 0; i < alumniRows.length; i++) {
+                    var row = alumniRows[i];
+                    var department = row.getAttribute('data-department');
+                    if (selectedDepartment === "" || department === selectedDepartment) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+
+                var employerRows = employerTable.getElementsByClassName('employer_row');
+                for (var i = 0; i < employerRows.length; i++) {
+                    var row = employerRows[i];
+                    var department = row.getAttribute('data-department');
+                    if (selectedDepartment === "" || department === selectedDepartment) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+
+                var facultyRows = facultyTable.getElementsByClassName('faculty_row');
+                for (var i = 0; i < facultyRows.length; i++) {
+                    var row = facultyRows[i];
+                    var department = row.getAttribute('data-department');
+                    if (selectedDepartment === "" || department === selectedDepartment) {
+                        row.style.display = 'table-row';
+                    } else {
+                        row.style.display = 'none';
+                    }
+                }
+            });
+        });
+    </script>
+</body>
+</html>

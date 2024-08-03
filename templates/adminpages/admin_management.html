@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Management</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      .navbar {
+        background: rgba(255, 255, 255, 0.1);
+        padding: 10px;
+        color: white;
+        text-align: center;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-family: Arial, Helvetica, sans-serif;
+        backdrop-filter: blur(10px);
+        margin-bottom: 50px;
+        border-radius: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .navbar img {
+        height: 50px;
+        width: 50px;
+      }
+
+      .navbar h1 {
+        margin: 0;
+        font-size: 18px;
+      }
+
+      .navbar-buttons {
+        display: flex;
+      }
+
+      .navbar a {
+        color: white;
+        text-decoration: none;
+        padding: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        margin: 10px;
+        border: 1px solid #fff;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+      }
+
+      .navbar a:hover {
+        background-color: #fff;
+        color: #333;
+      }
+      body {
+        font-family: 'Montserrat', sans-serif;
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        margin: 15px;
+        background-image: url('{{ url_for('static', filename='images/adminfeaturesbg.jpg') }}');
+
+      }
+      .container {
+        max-width: 1200px;
+        margin-top: 40px auto;
+        padding: 30px;
+        background: rgba(255, 255, 255, 0.9);
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        backdrop-filter: blur(10px);
+      }
+
+      h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: white;
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .success-message,
+      .error-message {
+        padding: 20px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+        animation: fadeOut 7s forwards;
+      }
+
+      .success-message {
+        background: rgba(17, 255, 4, 0.8);
+        color: #fff;
+      }
+
+      .error-message {
+        background: rgb(243, 3, 3);
+        color: #fff;
+      }
+
+      .form-container {
+        text-align: center;
+        display: flex;
+        justify-content: space-around;
+      }
+
+      .form {
+        width: 30%;
+        margin-bottom: 50px;
+        padding: 40px;
+        border: 1px solid rgba(221, 221, 221, 0.5);
+        border-radius: 10px;
+        box-sizing: border-box;
+        backdrop-filter: blur(10px);
+        font-family: Arial, Helvetica, sans-serif;
+      }
+
+      .form:nth-child(odd) {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.2
+        ); /* Background color with transparency */
+        backdrop-filter: blur(8px);
+      }
+
+      .form:nth-child(even) {
+        background-color: rgba(
+          255,
+          255,
+          255,
+          0.2
+        ); /* Background color with transparency */
+        backdrop-filter: blur(8px);
+      }
+
+      label {
+        display: block;
+        margin: 8px;
+        color: white;
+      }
+
+      input {
+        width: 100%;
+        padding: 12px; /* Increased padding for better visual appeal */
+        margin-bottom: 15px; /* Increased margin for better visual separation */
+        border: 1px solid rgba(204, 204, 204, 0.5);
+        border-radius: 8px; /* Rounded corners for input boxes */
+        box-sizing: border-box;
+        font-size: 16px; /* Increased font size for better readability */
+      }
+
+      button {
+        background: rgba(
+          17,
+          255,
+          0,
+          0.751
+        ); /* Gradient background for the button */
+        color: #fff;
+        padding: 15px 20px; /* Increased padding for better visual appeal */
+        border: none;
+        border-radius: 8px; /* Rounded corners for the button */
+        cursor: pointer;
+        width: 100%;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 18px; /* Increased font size for better readability */
+        transition: background 0.3s;
+        font-weight: bold;
+
+        /* Smooth transition for background color */
+      }
+
+      .table-container {
+        text-align: center;
+
+        margin: 40px;
+      }
+
+      p {
+        color: #555;
+      }
+
+      #t1 {
+        font-weight: bold;
+        background-position: center center;
+        background-size: cover;
+        background-repeat: no-repeat;
+        background: rgba(27, 135, 177, 0.8);
+        color: white;
+        text-align: center;
+      }
+      @keyframes fadeOut {
+        to {
+          opacity: 0;
+          transform: translateY(-25px);
+        }
+      }
+
+      /* Responsiveness */
+      @media (max-width: 767px) {
+        .form {
+          width: 100%;
+        }
+      }
+      .footer {
+        text-align: center;
+        padding: 10px;
+        background-color: #0e0c0cd1;
+        color: white;
+        border-radius: 0.5px;
+        margin-top: 20px;
+      }
+
+      .footer a {
+        color: white;
+        text-decoration: none;
+        margin-top: 100px;
+        margin-bottom: 0;
+      }
+
+      @media (max-width: 767px) {
+        .footer {
+          font-size: 14px;
+          margin-bottom: 0;
+        }
+      }
+      .cardimg {
+        height: 80px;
+        width: 80px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="navbar">
+      <img
+        src="{{ url_for('static', filename='images/logo.png') }}"
+        alt="Svec Logo"
+      />
+      <h1 style="color: white">Insert Or Delete Admins</h1>
+      <div class="navbar-buttons">
+        <a href="/admin_ui" class="logout-btn">Admin Features</a>
+        <a href="/home" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+    {% if success_message %}
+    <div class="success-message">{{ success_message }}</div>
+    {% endif %} {% if error_message %}
+    <div class="error-message">{{ error_message }}</div>
+    {% endif %} {% if file_not_found_message %}
+    <div class="error-message">{{ file_not_found_message }}</div>
+    {% else %}
+    <div class="form-container">
+      <div class="form">
+        <img
+          class="cardimg"
+          src="{{ url_for('static', filename='images/insert.png') }}"
+          alt="insert"
+        />
+        <h3 style="color: white; margin: 10px">Insert New Admin</h3>
+        <form method="POST" action="{{ url_for('admin_management') }}">
+          <input
+            type="text"
+            id="adminid"
+            name="adminid"
+            required
+            autocomplete="off"
+            placeholder="Enter New Admin ID"
+          />
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Enter New Password"
+            required
+          />
+
+          <button style="background: #05aa23" type="submit" name="insert">
+            Insert Admin
+          </button>
+        </form>
+      </div>
+
+      <div class="form">
+        <img
+          class="cardimg"
+          src="{{ url_for('static', filename='images/delete.png') }}"
+          alt="delete"
+        />
+        <h3 style="color: white; margin: 10px">Delete Existing Admin</h3>
+        <form method="POST" action="{{ url_for('admin_management') }}">
+          <input
+            type="text"
+            id="adminid"
+            name="adminid"
+            required
+            autocomplete="off"
+            placeholder="Enter Admin ID To Delete"
+          />
+
+          <button
+            style="background: rgba(255, 0, 0, 0.782)"
+            type="submit"
+            name="delete"
+          >
+            Delete Admin
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <div class="table-container">
+      {% if Admins %}
+      <table
+        style="
+          width: 80%;
+          margin: 20px auto;
+          border-radius: 8px;
+          overflow: hidden;
+          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+          background: rgba(255, 255, 255, 0.1);
+        "
+      >
+        <tr>
+          <th
+            colspan="3"
+            style="
+              padding: 12px;
+              border: 1px solid #2f2f2d;
+              background-color: #2e2f2cd3;
+              color: white;
+              font-weight: bold;
+              text-align: center;
+            "
+          >
+            List of Admins
+          </th>
+        </tr>
+        <tr>
+          <th
+            style="
+              padding: 12px;
+              border: 1px solid #0a0a0a;
+              background-color: #5f5d5d;
+              color: white;
+              font-weight: bold;
+              text-align: center;
+            "
+          >
+            Admin Id
+          </th>
+          <th
+            style="
+              padding: 12px;
+              border: 1px solid #0a0a0a;
+              background-color: #5f5d5d;
+              color: white;
+              font-weight: bold;
+              text-align: center;
+            "
+          >
+            Password
+          </th>
+        </tr>
+        {% for admin in Admins %}
+        <tr>
+          <td
+            style="
+              padding: 10px;
+              border: 1px solid #ddd;
+              text-align: center;
+              color: black;
+              background-color: rgb(221, 221, 221);
+            "
+          >
+            {{ admin.admin_id }}
+          </td>
+          <td
+            style="
+              padding: 10px;
+              border: 1px solid #ddd;
+              text-align: center;
+              color: black;
+              background-color: rgb(221, 221, 221);
+            "
+          >
+            {{ admin.admin_password }}
+          </td>
+        </tr>
+        {% endfor %}
+      </table>
+      {% else %}
+      <p>No admins available.</p>
+      {% endif %} {% endif %}
+    </div>
+    <div class="footer">
+      <marquee behavior="scroll" direction="left">
+        <a href="#" class="contact-link"
+          >Any enquiry? Contact us:- Email:principal@srivasaviengg.ac.in | Phone
+          Nos.:+91-8818-284355 ,284344,284544</a
+        >
+      </marquee>
+    </div>
+  </body>
+</html>

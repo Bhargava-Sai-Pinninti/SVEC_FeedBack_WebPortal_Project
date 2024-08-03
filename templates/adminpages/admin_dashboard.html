@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+      integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p"
+      crossorigin="anonymous"
+    />
+    <title>Svec Admin's Dashboard</title>
+   <!-- Include Chart.js library -->
+   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.2.2/html2canvas.min.js"></script>
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        /* Example using Google Fonts */
+body {
+    font-family: 'Open Sans', sans-serif;
+    background-image: url("{{ url_for('static', filename='images/background1.jpg') }}");
+    background-repeat: no-repeat;
+      background-size: cover;
+      background-attachment: fixed;
+      background-color: rgb(255, 255, 255);
+      scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+    overflow-y: scroll;
+}
+/* Hide the scrollbar in Webkit (Chrome, Safari) */
+body::-webkit-scrollbar {
+    width: 0;
+}
+
+/* Create a custom scrollbar thumb */
+body::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0); /* Transparent thumb */
+}
+
+/* Create a custom scrollbar track */
+body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0); /* Transparent track */
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  width: 160px;
+  height: calc(100% - 60px);
+  background: #1a1a1a; /* Dark background color */
+  overflow: hidden;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  transition: width 0.3s ease; /* Add smooth transition effect */
+}
+
+.sidebar:hover {
+  width: 210px; /* Expand the width on hover */
+}
+
+.sidebar ul {
+            margin-top: 50px; /* Adjusted margin for centering */
+            padding: 0;
+            display: flex;
+            flex-direction: column; /* Align items in a column */
+            align-items: center; /* Center-align items */
+        }
+
+        .sidebar ul li {
+            width: 100%;
+        }
+
+.sidebar ul li:hover {
+  background: #007bff; /* Highlight on hover */
+}
+
+.sidebar ul li a {
+  text-decoration: none;
+  color: #ffffff; /* Text color */
+  height: 45px;
+  display: flex;
+  align-items: center;
+  padding-left: 20px; /* Add some padding to the left */
+  transition: background 0.3s ease-in-out, color 0.3s ease-in-out;
+}
+
+.sidebar ul li a i {
+  min-width: 30px;
+  font-size: 15px;
+  margin-right: 10px; /* Add margin between icon and text */
+}
+
+/* Style for the main content area */
+.main {
+  margin-left: 160px; /* Adjust this margin to match the sidebar width */
+  transition: margin-left 0.3s ease;
+  overflow: hidden;
+}
+
+.sidebar:hover ~ .main {
+  overflow: hidden;
+  margin-left: 220px;
+}
+
+
+        /* Main Styles */
+/* Main Styles */
+.main {
+    position: absolute;
+    top: 60px;
+    left: 180px;
+    background: rgba(0, 0, 0, 0);
+    overflow: scroll; /* Add scroll but hide scrollbar */
+    scrollbar-width: none; /* Hide the scrollbar in Firefox */
+    -ms-overflow-style: none; /* Hide the scrollbar in IE/Edge */
+    padding:1px;
+    border-radius: 25px;
+    margin: 1px;
+    width: calc(100% - 270px); /* Adjust 260px according to your sidebar width */
+    min-height: calc(100vh - 60px);
+}
+
+/* Hide the scrollbar in Webkit (Chrome, Safari) */
+.main::-webkit-scrollbar {
+    display: none;
+}
+
+        h1 {
+    font-size: 28px;
+    color: #000000;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.5;
+    color: #000000;
+}
+
+a {
+    color: #0015ff;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #3d00b0;
+}
+
+
+/* Add this CSS for side-by-side posts in the content class */
+.content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.ww {
+    max-width: 20px; /* Adjust the maximum width as per your preference */
+    max-height: 28px; /* Adjust the maximum height as per your preference */
+}
+/* Style the top bar */
+/* Style the top bar */
+.topbar {
+    position: fixed;
+    background: rgb(211, 212, 213);
+    width: 100%;
+    padding: 0 20px;
+    height: 60px;
+    display: flex;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    align-items: center;
+    justify-content: space-between;
+    z-index: 2;
+}
+
+/* Style the form div */
+.formdiv {
+    display: flex;
+    align-items: center; /* Center vertically */
+}
+
+/* Style the form elements */
+.formdiv form {
+    display: flex;
+    align-items: center; /* Center vertically */
+}
+
+.formdiv label {
+    margin-right: 10px; /* Add spacing between labels and inputs */
+    font-weight: bold;
+}
+
+.formdiv select,
+.formdiv input[type="text"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.formdiv button[type="submit"] {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 8px 13px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* Add spacing between elements */
+.formdiv label,
+.formdiv select,
+.formdiv input[type="text"],
+.formdiv button[type="submit"] {
+    margin: 4px;
+}
+
+/* Additional styling */
+.formdiv select,
+.formdiv input[type="text"] {
+    background-color: #f4f4f4;
+}
+
+.formdiv select:focus,
+.formdiv input[type="text"]:focus {
+    border: 1px solid #007BFF;
+    outline: none;
+}
+.formdiv button:hover {
+    background-color: #48cf00;}
+
+/* Style the top bar h4 and h6 elements */
+.topbar h4,
+.topbar h6 {
+    color: #000000;
+    font-size: 15px;
+}
+
+
+/* Add this CSS to your existing styles */
+/* Styles for the container */
+.logo-container {
+  display: flex;
+  align-items: center; /* Vertically center the content */
+}
+
+/* Styles for the logo */
+.logo {
+  display: flex; /* Display its children side by side */
+  align-items: center; /* Vertically center the content */
+  margin-right: 10px; /* Add some spacing between the logo and the h4 */
+}
+
+.logo img {
+  width: 50px;
+  cursor: pointer;
+  border-radius: 20px;
+  padding: 2px;
+  transition: 3.5s;
+  margin: 5px;
+}
+
+.logo h4 {
+  color: #000000;
+  font-size: 16px;
+  margin-left: 5px; /* Add some spacing between the image and text */
+}
+
+
+
+h4 , label  {
+    color: #000000;
+    font-size: 16px;
+}
+
+
+.topbar .form-buttons {
+    display: flex;
+    align-items: center;
+}
+
+/* Adjust the button style with padding */
+.topbar .form-buttons button {
+    background-color: #005eff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 10px;
+    transition: background-color 0.3s, color 0.3s; /* Add transition for smooth hover effect */
+}
+
+/* Apply the hover effect */
+.topbar .form-buttons button:hover {
+    background-color: #ff9100;}
+
+.topbar .form-buttons button:last-child {
+    margin-right: 0; /* Remove margin from the last button */
+}
+
+.form-buttons select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #f4f4f4;
+    margin: 5px;
+    font-weight: bold;
+    outline: none;
+}
+
+/* Add the form-buttons class to the select element in form-buttons */
+.form-buttons select {
+    background-color: #f4f4f4;
+}
+
+/* ... (your existing styles) ... */
+
+/* Adjusted Chart Container Styling */
+.chart-container {
+    margin: 10px;
+    padding: 10px;
+    background: linear-gradient(to right, #f7f7f7, #e0e0e0);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.265);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.chart-container:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjusted Chart Title Styling */
+h2 {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+/* Adjusted Legend Styling */
+.legend {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    list-style: none;
+    padding: 0;
+}
+
+.legend li {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    transition: transform 0.3s ease;
+}
+
+.legend li:hover {
+    transform: scale(1.1);
+}
+
+.legend span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-right: 5px;
+    border-radius: 50%;
+    background: #3498db; /* Example color, replace with your preferred color */
+}
+
+.legend .label {
+    font-size: 12px;
+    color: #000000;
+}
+
+/* Adjusted Tooltip Styling */
+.tooltip {
+    position: absolute;
+    background: #fff;
+    border: 1px solid #ddd;
+    padding: 8px;
+    border-radius: 6px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.294);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.tooltip.active {
+    opacity: 1;
+}
+
+/* Limit the maximum width of the chart container */
+.chart-container canvas {
+    max-width: 100%; /* Adjust this value as needed */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+
+
+
+/* ... (remaining styles) ... */
+
+/* Advanced styling for the table */
+.chart-container table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    margin-top: 20px; /* Add margin to the top */
+}
+
+.chart-container th,
+.chart-container td {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+    font-weight: bold; /* Make header cells bold */
+}
+
+.chart-container th {
+    background-color: #007BFF;
+    color: #fff;
+}
+
+.chart-container tr {
+    border-bottom: 1px solid #ddd;
+}
+
+.chart-container tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.chart-container td {
+    padding: 10px;
+}
+
+.chart-container .percentage {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.chart-container tr:hover {
+    background-color: #f0f0f0;
+    transition: background-color 0.3s;
+}
+#Suggestions-content {
+      background-color: #f4f4f4;
+      padding: 20px;
+    }
+
+    #suggestionDropdown {
+      margin-bottom: 20px;
+      padding: 10px;
+    }
+
+    .suggestion-table {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .suggestion-table table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .suggestion-table th, .suggestion-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: left;
+    }
+
+    .suggestion-table th {
+      background-color: #f2f2f2;
+    }
+</style>
+</head>
+  <body>
+
+    {% macro createChartForSection(section, data) %}
+
+      <div>
+        <canvas id="{{ section|replace(' ', '_') }}_chart" width="1000" height="500"></canvas>
+    </div>
+
+    <script>
+        var chartData = {{ data | tojson | safe }};
+        var labels = [];
+
+        var values = Object.values(chartData);
+        Object.keys(chartData).forEach(function(question, index) {
+        labels.push("Q"+(index + 1));
+
+    });
+        var values = Object.values(chartData);
+
+        var ctx = document.getElementById("{{ section|replace(' ', '_') }}_chart").getContext('2d');
+        var chart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Strongly Agree',
+                        backgroundColor: '#04dd2c',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        data: values.map(function(item) { return item[4] || 0; })
+                    },
+                    {
+                        label: 'Agree',
+                        backgroundColor: '#2f00ff',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        data: values.map(function(item) { return item[3] || 0; })
+                    },
+                    {
+                        label: 'Neutral',
+                        backgroundColor: '#e0bf00',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        data: values.map(function(item) { return item[2] || 0; })
+                    },
+                    {
+                        label: 'Disagree',
+                        backgroundColor: '#ff7b00',
+                        borderColor: '#000000',
+                        borderWidth: 1,
+                        data: values.map(function(item) { return item[1] || 0; })
+                    }
+                ]
+            },
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            fontColor: 'black' // Set label text color to black
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            fontColor: 'black' // Set label text color to black
+                        }
+                    }]
+                }
+            }
+        });
+    </script>
+{% endmacro %}
+
+    {% macro createTableForSection(section, data) %}
+    <div>
+        <table border="1"style="width: 80%; margin: 20px auto; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); background: rgba(255, 255, 255, 0.1);">
+            <thead>
+                <tr>
+                  <th style="padding: 12px; border: 1px solid #ff0033; background-color: #ff0033; color: #fff; font-weight: bold; text-align: center;">Questions</th>
+                  <th style="padding: 12px; border: 1px solid #04dd2c; background-color:  #04dd2c; color: #fff; font-weight: bold; text-align: center;">Strongly Agree</th>
+                  <th style="padding: 12px; border: 1px solid #2f00ff; background-color: #2f00ff; color: #fff; font-weight: bold; text-align: center;">Agree</th>
+                  <th style="padding: 12px; border: 1px solid #e0bf00; background-color: #e0bf00; color: #fff; font-weight: bold; text-align: center;">Neutral</th>
+                  <th style="padding: 12px; border: 1px solid #ff7b00; background-color:#ff7b00; color: #fff; font-weight: bold; text-align: center;">Disagree</th>
+
+
+
+                  <th style="padding: 12px; border: 1px solid #c800ff; background-color: #c800ff; color: #fff; font-weight: bold; text-align: center;">Percentage</th>
+                </tr>
+            </thead>
+            <tbody>
+
+
+                {% for question, counts in data.items() %}
+                    <tr>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ question }}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ counts[4] }}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ counts[3] }}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ counts[2] }}</td>
+                        <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">{{ counts[1] }}</td>
+
+
+
+                        {% if counts[4] + counts[3] + counts[2] + counts[1] == 0 %}
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">0 %</td>
+                        {% else %}
+
+                            <td style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                              {{ "{:.2f}".format((((counts[4]*4)+(counts[3]*3)+(counts[2]*2)+(counts[1]*1))/((counts[4]+counts[3]+counts[2]+counts[1])*4))*100 )  }} %
+                            </td>
+                        {% endif %}
+                    </tr>
+                {% endfor %}
+
+                {% for question, counts in data.items() %}
+
+                            {% if loop.first %}
+                            <tr>
+                              <td colspan="6" style="padding: 10px; border: 1px solid #ddd; text-align: center;">
+                                total responses {{ counts[4] + counts[3] + counts[2] + counts[1] }}
+                              </td>
+                            </tr>
+                            {% endif %}
+
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% endmacro %}
+
+    {% macro createChartAndTableForSection(section, data) %}
+<div>
+    <h2>{{ section }}</h2>
+
+    <!-- Render chart -->
+    {{ createChartForSection(section, data) }}
+
+    <!-- Render table -->
+    {{ createTableForSection(section, data) }}
+</div>
+{% endmacro %}
+
+
+
+
+
+
+
+    <div id="preloader"></div>
+    <div class="container">
+      <div class="topbar">
+        <div class="logo-container">
+          <div class="logo">
+            <a href="/home"><img src="{{ url_for('static', filename='images/logo.png') }}"></a>
+            <h4>Admin Dashboard</h4>
+          </div>
+        </div>
+        <div class="formdiv">
+          <h4>{{ current_value }} FeedBack Analysis</h4>
+        </div>
+        <div class="form-buttons">
+          <form action="{{ url_for('admin_ui') }}" method="GET">
+          <button type="submit">Admin Features</button>
+        </form>
+          <button onclick="captureScreenshot()">Save Snippet</button>
+        <form action="{{ url_for('home') }}" method="GET">
+          <button type="submit">Logout</button>
+        </form>
+        </div>
+      </div>
+      <div class="sidebar">
+        <ul>
+          <li>
+            <a href="#" id="Collegewide">
+              <i class="fad fa-th-large"></i>
+              <div>College wide</div>
+            </a>
+          </li>
+          <li>
+            <a href="#" id="Student">
+              <i class="fad fa-user-edit"></i>
+              <div>Student</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" id="Alumni">
+              <i class="fad fa-user-graduate"></i>
+                <div>Alumni</div>
+            </a>
+        </li>
+
+
+          <li>
+            <a href="#" id="Faculty">
+              <i class="fad fa-chalkboard-teacher"></i>
+              <div>Faculty</div>
+            </a>
+          </li>
+          <li>
+            <a href="#" id="Employer">
+              <i class="fad fa-id-card-alt"></i>
+              <div>Employer</div>
+            </a>
+          </li>
+
+          <li>
+            <a href="#" id="Suggestions">
+              <i class="fad fa-stream"></i>
+              <div>Suggestions</div>
+            </a>
+          </li>
+
+        </ul>
+      </div>
+
+
+
+      <div class="main" id="main-content">
+        <div id="Collegewide-content" class="content" style="text-align: center;">
+
+
+          <!-- Render a single chart and table for each variable -->
+          <div style="display: inline-block; margin: auto;">
+              {{ createChartAndTableForSection("College Wide Students Feedback Analysis Of"+" "+current_value, Total_Student_counts | default({})) }}
+          </div>
+
+          <div style="display: inline-block; margin: auto;">
+              {{ createChartAndTableForSection("College Wide Alumni Feedback Analysis Of"+" "+current_value, Total_Alumni_counts | default({})) }}
+          </div>
+
+          <div style="display: inline-block; margin: auto;">
+              {{ createChartAndTableForSection("College Wide Faculty Feedback Analysis Of"+" "+current_value, Total_Faculty_counts | default({})) }}
+          </div>
+
+          <div style="display: inline-block; margin: auto;">
+              {{ createChartAndTableForSection("College Wide Employer Feedback Analysis Of"+" "+current_value, Total_Employer_counts | default({})) }}
+          </div>
+      </div>
+
+
+        <div id="Student-content" class="content" style="display: none">
+
+          <center>
+
+    <!-- Render bar charts for Student data -->
+            {% for Department , data in student_department_counts.items() %}
+            {{ createChartAndTableForSection(Department+"-Department Students Feedback Analysis Of"+" "+current_value, data | default({})) }}
+            {% endfor %}
+
+          </center>
+        </div>
+
+        <div id="Alumni-content" class="content" style="display: none">
+
+          <center>
+
+
+            {% for Department , data in   alumni_department_counts.items() %}
+            {{ createChartAndTableForSection(Department+"-Department Alumni Analysis Of"+" "+current_value, data | default({})) }}
+            {% endfor %}
+          </center>
+
+        </div>
+        <div id="Faculty-content" class="content" style="display: none">
+
+          <center>
+
+
+
+            {% for Department , data in faculty_department_counts.items() %}
+            {{ createChartAndTableForSection(Department+"-Department Faculty Analysis Of"+" "+current_value, data | default({})) }}
+            {% endfor %}
+          </center>
+        </div>
+        <div id="Employer-content" class="content" style="display: none">
+          <center>
+
+            {% for Department , data in employer_department_counts.items() %}
+            {{ createChartAndTableForSection(Department+"-Department Employer Analysis Of"+" "+current_value, data | default({})) }}
+            {% endfor %}
+          </center>
+
+        </div>
+
+        <div id="Suggestions-content" class="content">
+          <center>
+            <select id="suggestionDropdown">
+              <option value="" disabled selected hidden>Select UserType</option>
+              <option value="Student-Suggestionscontent">Student Suggestions</option>
+              <option value="Alumni-Suggestionscontent">Alumni Suggestions</option>
+              <option value="Employer-Suggestionscontent">Employer Suggestions</option>
+              <option value="Faculty-Suggestionscontent">Faculty Suggestions</option>
+            </select>
+
+            <div id="Student-Suggestionscontent" class="suggestion-table">
+              <h1>Student-Suggestions</h1>
+              <table border="1">
+                <!-- Table header -->
+                <thead>
+                  <tr>
+                    {% for column in Student_department_Suggestions.columns %}
+                      <th>{{ column }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                  {% for index, row in Student_department_Suggestions.iterrows() %}
+                    <tr>
+                      <td>{{ row['RollNumber'] }}</td>
+                      <td>{{ row['Department'] }}</td>
+                      <td>{{ row['Suggestion'] }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="Alumni-Suggestionscontent" class="suggestion-table">
+              <h1>Alumni-Suggestions</h1>
+              <table border="1">
+                <!-- Table header -->
+                <thead>
+                  <tr>
+                    {% for column in Alumni_department_Suggestions.columns %}
+                      <th>{{ column }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                  {% for index, row in Alumni_department_Suggestions.iterrows() %}
+                    <tr>
+                      <td>{{ row['RollNumber'] }}</td>
+                      <td>{{ row['Department'] }}</td>
+                      <td>{{ row['Suggestion'] }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="Employer-Suggestionscontent" class="suggestion-table">
+              <h1>Employer-Suggestions</h1>
+              <table border="1">
+                <!-- Table header -->
+                <thead>
+                  <tr>
+                    {% for column in Employer_department_Suggestions.columns %}
+                      <th>{{ column }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                  {% for index, row in Employer_department_Suggestions.iterrows() %}
+                    <tr>
+                      <td>{{ row['RollNumber'] }}</td>
+                      <td>{{ row['Department'] }}</td>
+                      <td>{{ row['Suggestion'] }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+            <div id="Faculty-Suggestionscontent" class="suggestion-table">
+              <h1>Faculty-Suggestions</h1>
+              <table border="1">
+                <!-- Table header -->
+                <thead>
+                  <tr>
+                    {% for column in Faculty_department_Suggestions.columns %}
+                      <th>{{ column }}</th>
+                    {% endfor %}
+                  </tr>
+                </thead>
+                <!-- Table body -->
+                <tbody>
+                  {% for index, row in Faculty_department_Suggestions.iterrows() %}
+                    <tr>
+                      <td>{{ row['RollNumber'] }}</td>
+                      <td>{{ row['Department'] }}</td>
+                      <td>{{ row['Suggestion'] }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+
+          </center>
+        </div>
+
+
+    </div>
+
+    <script>
+      // Add an event listener to the dropdown to toggle table visibility
+      document.getElementById('suggestionDropdown').addEventListener('change', function() {
+        var selectedTableId = this.value;
+        var allTables = document.querySelectorAll('.suggestion-table');
+
+        // Hide all tables
+        allTables.forEach(function(table) {
+          table.style.display = 'none';
+        });
+
+        // Show the selected table
+        document.getElementById(selectedTableId).style.display = 'block';
+      });
+    </script>
+
+
+    <script>
+      var loader = document.getElementById("preloader");
+      var startTime = new Date().getTime();
+      var pageLoaded = false;
+
+      // Function to hide the preloader
+      function hidePreloader() {
+        loader.style.visibility = "hidden";
+      }
+      // Function to handle when the page is fully loaded
+      function onPageLoaded() {
+        pageLoaded = true;
+        var currentTime = new Date().getTime();
+        var timeDiff = currentTime - startTime;
+        var minDisplayTime = 800; // 1 seconds
+        var remainingTime = minDisplayTime - timeDiff;
+
+        if (remainingTime <= 0) {
+          hidePreloader();
+        } else {
+          setTimeout(hidePreloader, remainingTime);
+        }
+      }
+      // Hide the preloader after 1 seconds (minimum display time)
+      setTimeout(hidePreloader, 800);
+      // Check if the page is fully loaded, and if so, hide the preloader
+      window.addEventListener("load", onPageLoaded);
+    </script>
+
+
+    <script>
+      // Function to show/hide content based on the clicked link
+      function showContent(contentId) {
+        // Hide all content sections
+        var contentSections = document.querySelectorAll(".content");
+        contentSections.forEach(function (content) {
+          content.style.display = "none";
+        });
+
+        // Show the selected content
+        var selectedContent = document.getElementById(contentId);
+        if (selectedContent) {
+          selectedContent.style.display = "block";
+        }
+      }
+
+      // Add click event listeners to the sidebar links
+      document
+        .getElementById("Collegewide")
+        .addEventListener("click", function () {
+          showContent("Collegewide-content");
+        });
+
+      document.getElementById("Student").addEventListener("click", function () {
+        showContent("Student-content");
+      });
+
+      document.getElementById("Alumni").addEventListener("click", function () {
+        showContent("Alumni-content");
+      });
+
+      document.getElementById("Employer").addEventListener("click", function () {
+        showContent("Employer-content");
+      });
+
+      document.getElementById("Faculty").addEventListener("click", function () {
+        showContent("Faculty-content");
+      });
+
+      document.getElementById("Suggestions").addEventListener("click", function () {
+        showContent("Suggestions-content");
+      });
+
+      // Initially, show the dashboard content
+      showContent("Collegewide-content");
+    </script>
+
+
+
+<script>
+  function captureScreenshot() {
+    const mainContent = document.getElementById("main-content");
+
+    // Use HTML2Canvas to capture the visible part of the main content with a higher scale
+    html2canvas(mainContent, { scale: 5 }).then(function(canvas) {
+      // Convert the canvas to a data URL
+      const imgData = canvas.toDataURL("image/png");
+
+      // Create a download link for the image
+      const link = document.createElement("a");
+      link.href = imgData;
+      link.download = "main_content_screenshot.png";
+      link.click();
+    });
+  }
+</script>
+
+<script>
+  // Function to toggle sidebar for mobile view
+  function toggleSidebar() {
+      var sidebar = document.querySelector('.sidebar');
+      sidebar.classList.toggle('show');
+  }
+</script>
+
+
+
+
+  </body>
+</html>
